@@ -34,16 +34,6 @@ class G6 {
                 // 允许拖拽画布、缩放画布、拖拽节点
                 default: [
                     'drag-canvas', // 官方内置的行为
-                    // 'zoom-canvas',
-                    /* {
-                        type:    'click-select',
-                        trigger: 'ctrl',
-                    }, */
-                    /* {
-                        type:           'drag-node',
-                        enableDelegate: true,
-                    }, */
-                    // 'activate-relations',
                     'canvas-event', // 自定义行为
                     'delete-item',
                     'select-node',

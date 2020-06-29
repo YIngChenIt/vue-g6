@@ -2,7 +2,7 @@
  * 注册基础节点, 其他节点都在此基础上继承和扩展
  */
 
-// import itemEvents from './item-event'
+import itemEvents from './item-event'
 import anchorEvent from './anchor-event'
 
 export default G6 => {
@@ -151,7 +151,7 @@ export default G6 => {
 
             if (buildInEvents.includes(name)) {
                 // 内部this绑定到了当前item实例
-                // itemEvents[name].call(this, value, group)
+                itemEvents[name].call(this, value, group)
             } else {
                 console.warn(`warning: ${name} 事件回调未注册!`)
             }

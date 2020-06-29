@@ -5,11 +5,11 @@
  */
 
 import shape from './shape';
-// import behavior from './behavior';
+import behavior from './behavior';
 
 export default G6 => {
   // 注册图形
   shape(G6);
   // 注册行为
-  // behavior(G6);
+  behavior(G6);
 };

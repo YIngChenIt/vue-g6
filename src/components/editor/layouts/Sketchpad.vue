@@ -1,5 +1,5 @@
 <template>
-  <div class="canvasPanel" id="canvasPanel" @dragover.prevent></div>
+  <div class="canvasPanel" id="canvasPanel"></div>
 </template>
 
 <script>
