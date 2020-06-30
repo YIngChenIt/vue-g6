@@ -9,7 +9,7 @@ class G6 {
 
             this.init(config)
         } else {
-            console.warn('registerFactory 方法未定义');
+            console.warn('registerFactory 方法未定义')
         }
     }
 
@@ -26,15 +26,13 @@ class G6 {
             },
             layout: {
                 type: 'dagre',
-                // rankdir: 'LR',
                 nodesep: 30,
                 ranksep: 30,
             },
             modes: {
-                // 允许拖拽画布、缩放画布、拖拽节点
                 default: [
-                    'drag-canvas', // 官方内置的行为
-                    'canvas-event', // 自定义行为
+                    'drag-canvas',
+                    'canvas-event',
                     'delete-item',
                     'select-node',
                     'hover-node',
@@ -95,22 +93,22 @@ class G6 {
         const instance = config.registerFactory(G6ES, options)
 
         if (instance) {
-            this.instance = instance;
+            this.instance = instance
 
-            const { el } = this.instance.cfg.canvas.cfg;
+            const { el } = this.instance.cfg.canvas.cfg
             // 记录画布移动的距离
-            el.id = `${options.container}-canvas`;
-            el.setAttribute('dx', 0);
-            el.setAttribute('dy', 0);
+            el.id = `${options.container}-canvas`
+            el.setAttribute('dx', 0)
+            el.setAttribute('dy', 0)
 
             document.addEventListener('click', e => {
                 // 内部键盘事件是否可被触发
-                el.setAttribute('isFocused', e.target.id === el.id);
-            });
+                el.setAttribute('isFocused', e.target.id === el.id)
+            })
         } else {
-            console.warn('未返回G6实例');
+            console.warn('未返回G6实例')
         }
     }
 }
 
-export default G6;
+export default G6

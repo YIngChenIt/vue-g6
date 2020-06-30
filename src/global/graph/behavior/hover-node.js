@@ -7,10 +7,10 @@ export default G6 => {
             }
         },
         onNodeEnter(e) {
-            e.item.setState('anchorShow', true);
+            e.item.setState('anchorShow', true)
         },
         onNodeLeave(e) {
-            e.item.setState('anchorShow', false);
+            e.item.setState('anchorShow', false)
         },
     })
 }

@@ -21,12 +21,63 @@ export default {
   },
   data() {
     return {
-      graph: {}
+      graph: {},
+      highLight: {
+        undo: false,
+        redo: false
+      },
+      // 保存线条样式
+      lineStyle: {
+        type: "line",
+        width: 1
+      },
+      label: "",
+      labelCfg: {
+        fontSize: 12,
+        fill: "#fff"
+      },
+      node: {
+        fill: "",
+        lineDash: "none",
+        borderColor: "",
+        width: 160,
+        height: 60,
+        shape: "rect-node"
+      },
+      nodeShapes: [
+        {
+          name: "矩形",
+          shape: "rect-node"
+        },
+        {
+          name: "圆形",
+          shape: "circle-node"
+        },
+        {
+          name: "椭圆",
+          shape: "ellipise-node"
+        },
+        {
+          name: "菱形",
+          shape: "diamond-node"
+        }
+      ],
+      headVisible: false,
+      configVisible: false,
+      config: "",
+      tooltip: "",
+      top: 0,
+      left: 0,
+      canvasOffset: {
+        x: 0,
+        y: 0
+      }
     };
   },
   mounted() {
     this.$nextTick(() => {
-      this.createGraphic()
+      this.createGraphic();
+      this.initGraphEvent();
     });
   },
   methods: {
@@ -34,9 +85,8 @@ export default {
       const graph = new G6({
         width: window.innerWidth - 250,
         height: window.innerHeight - 40,
-        // renderer: 'svg',
         layout: {
-          type: "xxx" // 位置将固定
+          type: "xxx"
         },
         defaultNode: {
           type: "rect-node",
@@ -88,6 +138,107 @@ export default {
       this.graph = graph.instance;
       this.graph.read(data);
       this.graph.paint();
+    },
+    initGraphEvent() {
+      this.graph.on("on-canvas-dragend", e => {
+        this.canvasOffset.x = e.dx;
+        this.canvasOffset.y = e.dy;
+      });
+
+      this.graph.on("after-node-selected", e => {
+        this.configVisible = !!e;
+
+        if (e && e.item) {
+          const model = e.item.get("model");
+
+          this.config = model;
+          this.label = model.label;
+          this.labelCfg = {
+            fill: model.labelCfg.fill,
+            fontSize: model.labelCfg.fontSize
+          };
+          this.node = {
+            fill: model.style.fill,
+            borderColor: model.style.stroke,
+            lineDash: model.style.lineDash || "none",
+            width: model.style.width,
+            height: model.style.height,
+            shape: model.type
+          };
+        }
+      });
+
+      this.graph.on("after-edge-selected", e => {
+        this.configVisible = !!e;
+
+        if (e && e.item) {
+          this.config = e.item.get("model").id;
+
+          this.graph.updateItem(e.item, {
+            // shape: 'line-edge',
+            style: {
+              radius: 10,
+              lineWidth: 2
+            }
+          });
+        }
+      });
+
+      this.graph.on("on-edge-mousemove", e => {
+        if (e && e.item) {
+          this.tooltip = e.item.get("model").label;
+          this.left = e.clientX + 40;
+          this.top = e.clientY - 20;
+        }
+      });
+
+      this.graph.on("on-node-mousemove", e => {
+        if (e && e.item) {
+          this.tooltip = e.item.get("model").id;
+          this.left = e.clientX + 40;
+          this.top = e.clientY - 20;
+        }
+      });
+
+      this.graph.on("on-node-mouseleave", e => {
+        if (e && e.item) {
+          this.tooltip = "";
+        }
+      });
+
+      this.graph.on("on-edge-mouseleave", e => {
+        if (e && e.item) {
+          this.tooltip = "";
+        }
+      });
+
+      this.graph.on("before-node-removed", ({ target, callback }) => {
+        console.log(target);
+        setTimeout(() => {
+          // 确认提示
+          callback(true);
+        }, 1000);
+      });
+
+      this.graph.on("after-node-dblclick", e => {
+        if (e && e.item) {
+          console.log(e.item);
+        }
+      });
+
+      this.graph.on(
+        "before-edge-add",
+        ({ source, target, sourceAnchor, targetAnchor }) => {
+          setTimeout(() => {
+            this.graph.addItem("edge", {
+              source: source.get("id"),
+              target: target.get("id"),
+              sourceAnchor,
+              targetAnchor
+            });
+          }, 100);
+        }
+      );
     }
   }
 };

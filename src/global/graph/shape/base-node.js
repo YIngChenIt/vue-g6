@@ -64,28 +64,28 @@ export default G6 => {
                     draggable: true,
                     isAnchor: true,
                     index: i,
-                });
+                })
 
                 /**
                  * ! 添加锚点事件绑定
                  */
-                anchorEvent(anchorGroup, group, p);
+                anchorEvent(anchorGroup, group, p)
 
-                group.anchorShapes.push(anchor);
-                group.anchorShapes.push(anchorGroup);
+                group.anchorShapes.push(anchor)
+                group.anchorShapes.push(anchorGroup)
             })
 
             // 查找所有锚点
             group.getAllAnchors = () => {
-                return group.anchorShapes.filter(c => c.get('isAnchor') === true);
+                return group.anchorShapes.filter(c => c.get('isAnchor') === true)
             }
             // 查找指定锚点
             group.getAnchor = (i) => {
-                return group.anchorShapes.filter(c => c.get('className') === 'node-anchor' && c.get('index') === i);
+                return group.anchorShapes.filter(c => c.get('className') === 'node-anchor' && c.get('index') === i)
             }
             // 查找所有锚点背景
             group.getAllAnchorBg = () => {
-                return group.anchorShapes.filter(c => c.get('className') === 'node-anchor-bg');
+                return group.anchorShapes.filter(c => c.get('className') === 'node-anchor-bg')
             }
         },
         addLabel(cfg, group) {
@@ -99,7 +99,7 @@ export default G6 => {
                 },
                 className: 'node-text',
                 draggable: true,
-            });
+            })
         },
         draw(cfg, group) {
             const attrs = this.getShapeStyle(cfg, group)
@@ -109,7 +109,7 @@ export default G6 => {
                 attrs,
             })
             group.getItem = className => {
-                return group.get('children').find(item => item.get('className') === className);
+                return group.get('children').find(item => item.get('className') === className)
             }
 
             // 添加文本节点
@@ -120,20 +120,20 @@ export default G6 => {
             return shape
         },
         update(cfg, node) {
-            const model = node.get('model');
-            const { attrs } = node.get('keyShape');
-            const text = node.get('group').getItem('node-text');
-            const item = node.get('group').get('children')[0];
+            const model = node.get('model')
+            const { attrs } = node.get('keyShape')
+            const text = node.get('group').getItem('node-text')
+            const item = node.get('group').get('children')[0]
 
             setTimeout(() => {
                 // 更新文本内容
                 text && text.attr({
                     text: model.label,
                     labelCfg: attrs.labelCfg,
-                });
+                })
                 // 更新节点属性
-                item.attr({ ...attrs, ...model.style });
-            });
+                item.attr({ ...attrs, ...model.style })
+            })
         },
         setState(name, value, item) {
             const buildInEvents = [
@@ -146,9 +146,8 @@ export default G6 => {
                 'nodeOnDragStart',
                 'nodeOnDrag',
                 'nodeOnDragEnd',
-            ];
+            ]
             const group = item.getContainer()
-
             if (buildInEvents.includes(name)) {
                 // 内部this绑定到了当前item实例
                 itemEvents[name].call(this, value, group)

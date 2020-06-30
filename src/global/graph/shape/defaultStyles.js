@@ -86,4 +86,4 @@ export default {
     stroke:    '#1890FF',
     lineWidth: 1,
   },
-};
+}
