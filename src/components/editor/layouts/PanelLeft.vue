@@ -1,9 +1,11 @@
 <template>
-  <div class="panel-left">
+  <div ref="itemPanel" class="panel-left">
     <div class="panel-item" :key="index" v-for="(item, index) in materials">
       <div class="header">
         <div class="title">{{ item.title }}</div>
-        <i class="iconfont icon-jiantou panel-icon"></i>
+        <div class="icon-tool">
+          <i class="iconfont icon-jiantou panel-icon"></i>
+        </div>
       </div>
       <div class="container">
         <div
@@ -11,6 +13,9 @@
           :key="idx"
           v-for="(itm, idx) in item.children"
           :style="() => setDefaultStyle()"
+          @click="(e) => addNode(itm, e)"
+          @dragend="(e) => addNode(itm, e)"
+          draggable="true"
         >
           <div class="content" :title="itm.title">
             <svg class="icon" v-html="itm.icon" />
@@ -25,6 +30,14 @@
 import { mapGetters } from "vuex";
 
 export default {
+  props: {
+    graph: {
+      type: Object
+    },
+    canvasOffset: {
+      type: Object
+    }
+  },
   methods: {
     setDefaultStyle(item) {
       const style = {};
@@ -35,7 +48,26 @@ export default {
         style.height = item.height + "px";
       }
       return style;
+    },
+    addNode(item, e) {
+      console.log(e)
+      const model = {
+        text: "node",
+        type: item.shape,
+        x: e.clientX - this.canvasOffset.x - 250,
+        y: e.clientY - this.canvasOffset.y - 40
+      };
+      this.graph.addItem("node", model);
     }
+  },
+  mounted() {
+    document.addEventListener(
+      "drop",
+      e => {
+        e.preventDefault();
+      },
+      false
+    );
   },
   computed: {
     ...mapGetters(["materials"])

@@ -44,12 +44,10 @@ export default G6 => {
         getShapeStyle(cfg) {
             const width = cfg.style.width || 80
             const height = cfg.style.height || 40
-
             return getStyle.call(this, {
                 width,
                 height,
                 radius: 5,
-                // 将图形中心坐标移动到图形中心, 用于方便鼠标位置计算
                 x: -width / 2,
                 y: -height / 2,
             }, cfg)

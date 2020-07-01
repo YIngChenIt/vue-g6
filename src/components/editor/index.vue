@@ -1,7 +1,7 @@
 <template>
   <div class="editor">
     <Header />
-    <PanelLeft />
+    <PanelLeft :canvasOffset="canvasOffset" :graph="graph" />
     <Sketchpad />
   </div>
 </template>
