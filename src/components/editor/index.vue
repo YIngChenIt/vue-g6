@@ -2,6 +2,7 @@
   <div class="editor">
     <Header />
     <PanelLeft :canvasOffset="canvasOffset" :graph="graph" />
+    <PanelRight :configVisible="configVisible" />
     <Sketchpad />
   </div>
 </template>
@@ -9,6 +10,7 @@
 <script>
 import Header from "./layouts/Header";
 import PanelLeft from "./layouts/PanelLeft";
+import PanelRight from "./layouts/PanelRight";
 import Sketchpad from "./layouts/Sketchpad";
 import G6 from "./../../global/graph";
 import data from "./../../global/graph/data";
@@ -17,6 +19,7 @@ export default {
   components: {
     Header,
     PanelLeft,
+    PanelRight,
     Sketchpad
   },
   data() {
@@ -147,7 +150,6 @@ export default {
 
       this.graph.on("after-node-selected", e => {
         this.configVisible = !!e;
-
         if (e && e.item) {
           const model = e.item.get("model");
 
@@ -175,7 +177,6 @@ export default {
           this.config = e.item.get("model").id;
 
           this.graph.updateItem(e.item, {
-            // shape: 'line-edge',
             style: {
               radius: 10,
               lineWidth: 2
