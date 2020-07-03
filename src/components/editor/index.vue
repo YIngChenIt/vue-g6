@@ -2,7 +2,7 @@
   <div class="editor">
     <Header />
     <PanelLeft :canvasOffset="canvasOffset" :graph="graph" />
-    <PanelRight :configVisible="configVisible" />
+    <PanelRight :graph="graph" :currentConfig="currentConfig" :configVisible="configVisible" />
     <Sketchpad />
   </div>
 </template>
@@ -74,7 +74,8 @@ export default {
       canvasOffset: {
         x: 0,
         y: 0
-      }
+      },
+      currentConfig: {}
     };
   },
   mounted() {
@@ -167,6 +168,20 @@ export default {
             height: model.style.height,
             shape: model.type
           };
+          this.currentConfig = {
+            config: model,
+            id: model.id,
+            label: model.label,
+            labelCfgFill: model.labelCfg.fill,
+            labelCfgFontSize: model.labelCfg.fontSize,
+            nodeFill: model.style.fill,
+            nodeBorderColor: model.style.stroke,
+            nodeLineDash: model.style.lineDash || "none",
+            nodeWidth: model.style.width,
+            nodeHeight: model.style.height,
+            nodeShape: model.type
+          }
+          console.log(model)
         }
       });
 
@@ -175,7 +190,6 @@ export default {
 
         if (e && e.item) {
           this.config = e.item.get("model").id;
-
           this.graph.updateItem(e.item, {
             style: {
               radius: 10,

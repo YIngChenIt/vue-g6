@@ -1,140 +1,65 @@
 <template>
   <div class="panel-right" :class="{ hidden: !configVisible }">
     <div class="title">文字配置</div>
-    <a-form :form="form" layout="vertical" hide-required-mark>
-      <a-row :gutter="16">
-        <a-col :span="12">
-          <a-form-item label="文字">
-            <a-input
-              v-decorator="[
-                  'name',
-                  {
-                    rules: [{ required: true, message: '' }],
-                  },
-                ]"
-              placeholder
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label="字体大小">
-            <a-input
-              v-decorator="[
-                  'size',
-                  {
-                    rules: [{ required: true, message: '' }],
-                  },
-                ]"
-              placeholder
-            />
-          </a-form-item>
-        </a-col>
-      </a-row>
-      <a-row :gutter="16">
-        <a-col :span="12">
-          <a-form-item label="字体颜色">
-            <a-input
-              v-decorator="[
-                  'size',
-                  {
-                    rules: [{ required: true, message: '' }],
-                  },
-                ]"
-              placeholder
-            />
-          </a-form-item>
-        </a-col>
-      </a-row>
-    </a-form>
+    <a-row :gutter="16">
+      <a-col :span="12">
+        <a-form-item label="文字">
+          <a-input v-model="currentConfig.label" placeholder />
+        </a-form-item>
+      </a-col>
+      <a-col :span="12">
+        <a-form-item label="字体大小">
+          <a-input v-model="currentConfig.labelCfgFontSize" placeholder />
+        </a-form-item>
+      </a-col>
+    </a-row>
+    <a-row :gutter="16">
+      <a-col :span="12">
+        <a-form-item label="字体颜色">
+          <a-input v-model="currentConfig.labelCfgFill" placeholder />
+        </a-form-item>
+      </a-col>
+    </a-row>
     <div class="title">节点配置</div>
-    <a-form :form="form1" layout="vertical" hide-required-mark>
-      <a-row :gutter="16">
-        <a-col :span="12">
-          <a-form-item label="形状">
-            <a-select
-              v-decorator="[
-                  'name',
-                  {
-                    rules: [{ required: true, message: '' }],
-                  },
-                ]"
-              placeholder
-            />
+    <a-row :gutter="16">
+      <a-col :span="12">
+        <a-form-item label="形状">
+          <!-- <a-select v-model="currentConfig.nodeShape" placeholder>
             <a-select-option value="xiao">Xiaoxiao Fu</a-select-option>
             <a-select-option value="mao">Maomao Zhou</a-select-option>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label="背景色">
-            <a-input
-              v-decorator="[
-                  'size',
-                  {
-                    rules: [{ required: true, message: '' }],
-                  },
-                ]"
-              placeholder
-            />
-          </a-form-item>
-        </a-col>
-      </a-row>
-      <a-row :gutter="16">
-        <a-col :span="12">
-          <a-form-item label="边框虚线">
-            <a-input
-              v-decorator="[
-                  'size',
-                  {
-                    rules: [{ required: true, message: '' }],
-                  },
-                ]"
-              placeholder
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label="边框颜色">
-            <a-input
-              v-decorator="[
-                  'size',
-                  {
-                    rules: [{ required: true, message: '' }],
-                  },
-                ]"
-              placeholder
-            />
-          </a-form-item>
-        </a-col>
-      </a-row>
-      <a-row :gutter="16">
-        <a-col :span="12">
-          <a-form-item label="宽">
-            <a-input
-              v-decorator="[
-                  'size',
-                  {
-                    rules: [{ required: true, message: '' }],
-                  },
-                ]"
-              placeholder
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label="高">
-            <a-input
-              v-decorator="[
-                  'size',
-                  {
-                    rules: [{ required: true, message: '' }],
-                  },
-                ]"
-              placeholder
-            />
-          </a-form-item>
-        </a-col>
-      </a-row>
-    </a-form>
+          </a-select>-->
+        </a-form-item>
+      </a-col>
+      <a-col :span="12">
+        <a-form-item label="背景色">
+          <a-input v-model="currentConfig.nodeFill" placeholder />
+        </a-form-item>
+      </a-col>
+    </a-row>
+    <a-row :gutter="16">
+      <a-col :span="12">
+        <!-- <a-form-item label="边框虚线">
+          <a-input v-model="currentConfig.nodeLineDash" placeholder />
+        </a-form-item>-->
+      </a-col>
+      <a-col :span="12">
+        <a-form-item label="边框颜色">
+          <a-input v-model="currentConfig.nodeBorderColor" placeholder />
+        </a-form-item>
+      </a-col>
+    </a-row>
+    <a-row :gutter="16">
+      <a-col :span="12">
+        <a-form-item label="宽">
+          <a-input v-model="currentConfig.nodeWidth" placeholder />
+        </a-form-item>
+      </a-col>
+      <a-col :span="12">
+        <a-form-item label="高">
+          <a-input v-model="currentConfig.nodeHeight" placeholder />
+        </a-form-item>
+      </a-col>
+    </a-row>
     <div
       :style="{
           position: 'absolute',
@@ -149,7 +74,7 @@
         }"
     >
       <a-button :style="{ marginRight: '8px' }">Cancel</a-button>
-      <a-button type="primary">Submit</a-button>
+      <a-button type="primary" @click="save">Submit</a-button>
     </div>
   </div>
 </template>
@@ -159,7 +84,39 @@ export default {
   props: {
     configVisible: {
       default: false
+    },
+    currentConfig: {
+      default: {}
+    },
+    graph: {
+      type: Object
     }
+  },
+  methods: {
+    save() {
+      const item = this.graph.findById(this.currentConfig.id);
+      this.graph.updateItem(item, {
+        label: this.currentConfig.label,
+        labelCfg: {
+            fontSize: Number(this.currentConfig.labelCfgFontSize),
+            fill: this.currentConfig.labelCfgFill
+        }
+      })
+    }
+  },
+  mounted() {
+    //this.currentConfig = JSON.parse(JSON.stringify(this.current))
+  },
+  watch: {
+    // currentConfig: {
+    //   handler(newName, oldName) {
+    //     const item = this.graph.findById(this.currentConfig.config.id);
+    //     this.graph.updateItem(item, {
+    //         label: this.currentConfig.label,
+    //     });
+    //   },
+    //   deep: true
+    // }
   }
 };
 </script>
