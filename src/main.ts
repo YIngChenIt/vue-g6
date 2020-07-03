@@ -3,10 +3,15 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './assets/styles/main.less'
-import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
+import { Row, Col, Form, Input,Button } from 'ant-design-vue';
 
-Vue.use(Antd)
+
+Vue.component(Row.name, Row);
+Vue.component(Col.name, Col);
+Vue.component(Input.name, Input);
+Vue.component(Form.Item.name, Form.Item);
+Vue.component(Button.name, Button);
 
 Vue.config.productionTip = false
 
